@@ -40,7 +40,7 @@
                                                 <div class="search">
                                                                         <h2>Password</h2>
                                                                         <input type="text" name="s" value="password">
-                                                                        <button>&nbsp;</button>
+                                                                        <button>log in</button>
 								</div>                
 							   
 							   

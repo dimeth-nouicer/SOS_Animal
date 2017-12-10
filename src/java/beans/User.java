@@ -5,6 +5,15 @@
  */
 package beans;
 
+import database.Db_Connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Lenovo
@@ -85,5 +94,51 @@ public class User {
         this.hasAnimal = hasAnimal;
     }
     
+    public static boolean LoginUser(String email,String password) 
+    {
+            boolean check =false;
+            try 
+            {      
+                Db_Connection dbconn=new Db_Connection();
+                Connection myconnection= dbconn.Connection();
+                
+                PreparedStatement ps1 =myconnection.prepareStatement("select * from users where email=? and password=?");
+
+                ps1.setString(1, email);
+                ps1.setString(2, password);
+                ResultSet rs1 =ps1.executeQuery();
+                check = rs1.next();
+
+                myconnection.close();        
+            }catch(Exception e){e.printStackTrace();}
+            
+            return check;    
+    }
     
+    
+    public void GetUser()
+    {
+            try 
+            {      
+                Db_Connection dbconn=new Db_Connection();
+                Connection myconnection= dbconn.Connection();
+                
+                String sqlString = "SELECT * FROM users WHERE username = '"+id+"'";
+                Statement myStatement = myconnection.createStatement();
+                ResultSet rs=myStatement.executeQuery(sqlString);
+
+                while(rs.next())
+                {
+                    id= rs.getString("id");
+                    password = rs.getString("password");
+                    email= rs.getString("email");
+                    //isAdmin = rs.getString("");
+                }
+                
+                myStatement.close();
+                myconnection.close();
+                
+            } catch (SQLException ex) {Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);} 
+            
+    }
 }
